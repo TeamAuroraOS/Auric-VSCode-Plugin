@@ -1,0 +1,159 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Auric",
+  "scopeName": "source.auric",
+  "patterns": [
+    { "include": "#function-declaration" },
+    { "include": "#statements" }
+  ],
+  "repository": {
+    "statements": {
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#let-declaration" },
+        { "include": "#keywords" },
+        { "include": "#types" },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#constants" },
+        { "include": "#builtins" },
+        { "include": "#function-calls" },
+        { "include": "#operators" },
+        { "include": "#punctuation" },
+        { "include": "#identifiers" },
+        { "include": "#invalid" }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.auric",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "beginCaptures": { "0": { "name": "punctuation.definition.comment.begin.auric" } },
+          "endCaptures": { "0": { "name": "punctuation.definition.comment.end.auric" } }
+        },
+        {
+          "name": "comment.line.double-slash.auric",
+          "match": "(//).*$",
+          "captures": { "1": { "name": "punctuation.definition.comment.auric" } }
+        }
+      ]
+    },
+    "function-declaration": {
+      "name": "meta.function.auric",
+      "begin": "\\b(fn)\\s+([_\\p{L}][_\\p{L}\\p{N}]*)\\s*(\\()",
+      "beginCaptures": {
+        "1": { "name": "storage.type.function.auric" },
+        "2": { "name": "entity.name.function.auric" },
+        "3": { "name": "punctuation.definition.parameters.begin.auric" }
+      },
+      "end": "(\\))|(?=[{;])",
+      "endCaptures": { "1": { "name": "punctuation.definition.parameters.end.auric" } },
+      "patterns": [
+        { "include": "#comments" },
+        {
+          "match": "([_\\p{L}][_\\p{L}\\p{N}]*)\\s*(:)",
+          "captures": {
+            "1": { "name": "variable.parameter.auric" },
+            "2": { "name": "punctuation.separator.colon.auric" }
+          }
+        },
+        { "include": "#types" },
+        { "name": "punctuation.separator.comma.auric", "match": "," }
+      ]
+    },
+    "let-declaration": {
+      "match": "\\b(let)\\s+([_\\p{L}][_\\p{L}\\p{N}]*)",
+      "captures": {
+        "1": { "name": "storage.type.auric" },
+        "2": { "name": "variable.other.declaration.auric" }
+      }
+    },
+    "keywords": {
+      "patterns": [
+        { "name": "keyword.control.conditional.auric", "match": "\\b(if|else)\\b" },
+        { "name": "keyword.control.loop.auric", "match": "\\bwhile\\b" },
+        { "name": "keyword.control.flow.auric", "match": "\\b(return|break|continue)\\b" },
+        {
+          "match": "\\b(fn)\\s+([_\\p{L}][_\\p{L}\\p{N}]*)",
+          "captures": {
+            "1": { "name": "storage.type.function.auric" },
+            "2": { "name": "entity.name.function.auric" }
+          }
+        },
+        { "name": "storage.type.function.auric", "match": "\\bfn\\b" },
+        { "name": "storage.type.auric", "match": "\\blet\\b" },
+        { "name": "constant.language.boolean.auric", "match": "\\b(true|false)\\b" }
+      ]
+    },
+    "types": {
+      "name": "support.type.primitive.auric",
+      "match": "\\b(int|float|bool|string)\\b"
+    },
+    "strings": {
+      "name": "string.quoted.double.auric",
+      "begin": "\"",
+      "end": "\"|$",
+      "beginCaptures": { "0": { "name": "punctuation.definition.string.begin.auric" } },
+      "endCaptures": { "0": { "name": "punctuation.definition.string.end.auric" } },
+      "patterns": [
+        { "name": "constant.character.escape.auric", "match": "\\\\." }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        { "name": "invalid.illegal.numeric.hex.auric", "match": "\\b0[xX](?![0-9a-fA-F])" },
+        { "name": "constant.numeric.hex.auric", "match": "\\b0[xX][0-9a-fA-F]+" },
+        { "name": "constant.numeric.float.auric", "match": "\\b[0-9]+\\.[0-9]+" },
+        { "name": "constant.numeric.integer.auric", "match": "\\b[0-9]+" }
+      ]
+    },
+    "constants": {
+      "name": "variable.other.constant.auric",
+      "match": "\\b(BLACK|WHITE|RED|GREEN|BLUE|CYAN|MAGENTA|YELLOW|ORANGE|AURORA|GRAY|DARK_GRAY|TOP|BOTTOM|KEY_A|KEY_B|KEY_SELECT|KEY_START|KEY_RIGHT|KEY_LEFT|KEY_UP|KEY_DOWN|KEY_R|KEY_L|KEY_X|KEY_Y)\\b"
+    },
+    "builtins": {
+      "name": "support.function.builtin.auric",
+      "match": "\\b(screen|print|print_int|clear|fill_rect|wait_key|delay|keys_down|keys_held|touch_down|touch_held|touch_up|touch_x|touch_y|touch_in|buffered|present|rand|millis|load_sound|play_sound|play_music|stop_music|stop_sounds|net_connect|net_online|net_error|net_address|http_get|http_post|http_param|http_param_int|http_header|http_text|http_length|http_lines|http_line|http_save|http_download|json_has|json_int|json_float|json_bool|json_string|json_count|json_index)\\b"
+    },
+    "function-calls": {
+      "match": "([_\\p{L}][_\\p{L}\\p{N}]*)\\s*(?=\\()",
+      "captures": { "1": { "name": "entity.name.function.call.auric" } }
+    },
+    "operators": {
+      "patterns": [
+        { "name": "keyword.operator.arrow.auric", "match": "->" },
+        { "name": "keyword.operator.comparison.auric", "match": "==|!=|<=|>=" },
+        { "name": "keyword.operator.logical.auric", "match": "&&|\\|\\|" },
+        { "name": "keyword.operator.bitwise.shift.auric", "match": "<<|>>" },
+        { "name": "keyword.operator.comparison.auric", "match": "<|>" },
+        { "name": "keyword.operator.logical.auric", "match": "!" },
+        { "name": "keyword.operator.bitwise.auric", "match": "&|\\||\\^" },
+        { "name": "keyword.operator.assignment.auric", "match": "=" },
+        { "name": "keyword.operator.arithmetic.auric", "match": "\\+|-|\\*|/|%" }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        { "name": "punctuation.terminator.statement.auric", "match": ";" },
+        { "name": "punctuation.separator.comma.auric", "match": "," },
+        { "name": "punctuation.separator.colon.auric", "match": ":" },
+        { "name": "punctuation.section.block.begin.auric", "match": "\\{" },
+        { "name": "punctuation.section.block.end.auric", "match": "\\}" },
+        { "name": "punctuation.section.parens.begin.auric", "match": "\\(" },
+        { "name": "punctuation.section.parens.end.auric", "match": "\\)" },
+        { "name": "punctuation.section.brackets.begin.auric", "match": "\\[" },
+        { "name": "punctuation.section.brackets.end.auric", "match": "\\]" }
+      ]
+    },
+    "identifiers": {
+      "name": "variable.other.readwrite.auric",
+      "match": "[_\\p{L}][_\\p{L}\\p{N}]*"
+    },
+    "invalid": {
+      "name": "invalid.illegal.character.auric",
+      "match": "\\S"
+    }
+  }
+}

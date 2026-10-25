@@ -1,0 +1,194 @@
+{
+  "name": "auric",
+  "displayName": "Auric",
+  "description": "Auric language support for AuroraOS: syntax coloring, live error checking, hover docs, autocomplete, snippets, and aurc build commands for .aur files.",
+  "version": "0.1.0",
+  "publisher": "teamauroraos",
+  "license": "GPL-3.0",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TeamAuroraOS/AuroraOS"
+  },
+  "homepage": "https://github.com/TeamAuroraOS/AuroraOS/tree/main/auric-lang",
+  "bugs": {
+    "url": "https://github.com/TeamAuroraOS/AuroraOS/issues"
+  },
+  "keywords": [
+    "auric",
+    "aurora",
+    "auroraos",
+    "3ds",
+    "aur"
+  ],
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Linters"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "main": "./out/src/extension.js",
+  "activationEvents": [],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "Coloring and error checking work everywhere. Building runs the Auric compiler, so it needs a trusted workspace.",
+      "restrictedConfigurations": [
+        "auric.compiler.path",
+        "auric.compiler.auricLangPath",
+        "auric.compiler.pythonPath",
+        "auric.build.extraArgs"
+      ]
+    }
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "auric",
+        "aliases": [
+          "Auric",
+          "auric"
+        ],
+        "extensions": [
+          ".aur"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./images/file-icon.svg",
+          "dark": "./images/file-icon.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "auric",
+        "scopeName": "source.auric",
+        "path": "./syntaxes/auric.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "auric",
+        "path": "./snippets/auric.code-snippets"
+      }
+    ],
+    "commands": [
+      {
+        "command": "auric.build",
+        "title": "Build App",
+        "category": "Auric",
+        "icon": "$(play)"
+      },
+      {
+        "command": "auric.showGeneratedC",
+        "title": "Show Generated C",
+        "category": "Auric",
+        "icon": "$(file-code)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "auric.build",
+          "when": "resourceLangId == auric",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "auric.build",
+          "when": "resourceLangId == auric",
+          "group": "auric@1"
+        },
+        {
+          "command": "auric.showGeneratedC",
+          "when": "resourceLangId == auric",
+          "group": "auric@2"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "auric.build",
+          "when": "resourceLangId == auric",
+          "group": "auric@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "auric.build",
+          "when": "editorLangId == auric"
+        },
+        {
+          "command": "auric.showGeneratedC",
+          "when": "editorLangId == auric"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Auric",
+      "properties": {
+        "auric.diagnostics.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Check .aur files for errors as you type."
+        },
+        "auric.compiler.path": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "markdownDescription": "Path to the standalone `aurc.exe`. Leave empty to run the compiler from an `auric-lang` folder with Python (see `#auric.compiler.auricLangPath#`)."
+        },
+        "auric.compiler.auricLangPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "markdownDescription": "Path to the `auric-lang` folder of an AuroraOS checkout, run as `python -m compiler.aurc`. Leave empty to look for it in the folders above the file being built and in the workspace."
+        },
+        "auric.compiler.pythonPath": {
+          "type": "string",
+          "default": "python",
+          "scope": "machine-overridable",
+          "markdownDescription": "Python 3.10+ used to run `compiler.aurc` from `#auric.compiler.auricLangPath#`."
+        },
+        "auric.build.outputDirectory": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Folder for the built `.bin`, absolute or relative to the source file's folder. Leave empty to write it next to the source, as `aurc` does."
+        },
+        "auric.build.useIconFile": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "When `<name>.icon` sits next to `<name>.aur`, pass it to `aurc build --icon`."
+        },
+        "auric.build.extraArgs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "Extra arguments for `aurc build`, e.g. `[\"--magic\", \"AOS1\"]`."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "test": "tsc -p . && node --test \"out/test/*.test.js\"",
+    "test:parity": "tsc -p . && node out/scripts/parity.js",
+    "test:vscode": "tsc -p . && node out/test/vscode/run.js",
+    "vscode:prepublish": "tsc -p .",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@types/vscode": "1.85.0",
+    "@vscode/test-electron": "^2.5.0",
+    "@vscode/vsce": "^3.6.0",
+    "typescript": "^5.9.3",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.2.0"
+  }
+}

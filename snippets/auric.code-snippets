@@ -1,0 +1,123 @@
+{
+  "Main function": {
+    "prefix": "main",
+    "body": ["fn main() {", "\t$0", "}"],
+    "description": "The entry point every program needs"
+  },
+  "Function": {
+    "prefix": "fn",
+    "body": ["fn ${1:name}($2) {", "\t$0", "}"],
+    "description": "A function that returns nothing"
+  },
+  "Function returning a value": {
+    "prefix": "fnr",
+    "body": ["fn ${1:name}($2) -> ${3|int,float,bool,string|} {", "\t$0", "}"],
+    "description": "A function with a return type"
+  },
+  "Variable": {
+    "prefix": "let",
+    "body": ["let ${1:name} = ${2:0};"],
+    "description": "A variable whose type comes from its value"
+  },
+  "Typed variable": {
+    "prefix": "lett",
+    "body": ["let ${1:name}: ${2|int,float,bool,string|} = ${3:0};"],
+    "description": "A variable with its type written out"
+  },
+  "Array": {
+    "prefix": "array",
+    "body": ["let ${1:name}: ${2|int,float,bool,string|}[${3:10}];"],
+    "description": "A fixed-length array, zero-filled"
+  },
+  "If": {
+    "prefix": "if",
+    "body": ["if ${1:condition} {", "\t$0", "}"],
+    "description": "if (no parentheses needed around the condition)"
+  },
+  "If / else": {
+    "prefix": "ifelse",
+    "body": ["if ${1:condition} {", "\t$2", "} else {", "\t$0", "}"],
+    "description": "if with an else branch"
+  },
+  "Else if": {
+    "prefix": "elseif",
+    "body": ["else if ${1:condition} {", "\t$0", "}"],
+    "description": "Another branch after an if"
+  },
+  "While": {
+    "prefix": "while",
+    "body": ["while ${1:condition} {", "\t$0", "}"],
+    "description": "Repeat while the condition holds"
+  },
+  "Counting loop": {
+    "prefix": "for",
+    "body": ["let ${1:i} = ${2:0};", "while $1 < ${3:count} {", "\t$0", "\t$1 = $1 + 1;", "}"],
+    "description": "Count with a while loop (Auric has no for loop)"
+  },
+  "Button pressed": {
+    "prefix": "key",
+    "body": [
+      "if (keys_down() & ${1|KEY_A,KEY_B,KEY_X,KEY_Y,KEY_START,KEY_SELECT,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT,KEY_L,KEY_R|}) != 0 {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Do something once when a button is pressed"
+  },
+  "Game loop": {
+    "prefix": "gameloop",
+    "body": [
+      "fn main() {",
+      "\tbuffered(true);",
+      "\tlet next_step = millis() + ${1:500};",
+      "\twhile true {",
+      "\t\tlet keys = keys_down();",
+      "\t\tif (keys & KEY_A) != 0 {",
+      "\t\t\t$2",
+      "\t\t}",
+      "\t\tlet now = millis();",
+      "\t\tif now >= next_step {",
+      "\t\t\tnext_step = now + $1;",
+      "\t\t\t$3",
+      "\t\t}",
+      "\t\tclear(BLACK);",
+      "\t\t$0",
+      "\t\tpresent();",
+      "\t}",
+      "}"
+    ],
+    "description": "A main loop timed by millis(), drawing off-screen and presenting each frame"
+  },
+  "Touch button": {
+    "prefix": "button",
+    "body": [
+      "screen(BOTTOM);",
+      "fill_rect(${1:120}, ${2:100}, ${3:80}, ${4:40}, ${5:AURORA});",
+      "print(\"${6:Start}\", $1 + 8, $2 + 16, BLACK);",
+      "if touch_down() && touch_in($1, $2, $3, $4) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Draw a button on the bottom screen and act when it is tapped"
+  },
+  "Load a sound": {
+    "prefix": "sound",
+    "body": ["${1:jump} = load_sound(\"Aurora/Apps/${2:MYAPP}/${3:JUMP}.WAV\");"],
+    "description": "Load a WAV from the SD card into a global handle (declare it with let ${1:jump} = -1;)"
+  },
+  "HTTP GET": {
+    "prefix": "httpget",
+    "body": [
+      "if !net_connect() {",
+      "\tprint(net_error(), 8, 8, RED);",
+      "\twait_key(KEY_A);",
+      "\treturn;",
+      "}",
+      "if http_get(\"${1:http://example.com/}\") == 200 {",
+      "\t$0",
+      "} else {",
+      "\tprint(net_error(), 8, 8, RED);",
+      "}"
+    ],
+    "description": "Join the saved Wi-Fi network and make an HTTP GET"
+  }
+}

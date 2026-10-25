@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 88 88">
+  <defs>
+    <linearGradient id="aurora" x1="0" y1="24" x2="0" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5FE3C0"/>
+      <stop offset="1" stop-color="#8E7CFF"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#aurora)">
+    <polygon points="56,24 72,24 46,104 28,104"/>
+    <polygon points="56,24 72,24 100,104 82,104"/>
+    <polygon points="45,74 83,74 86,86 42,86"/>
+  </g>
+</svg>

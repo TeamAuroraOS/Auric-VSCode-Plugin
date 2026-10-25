@@ -1,0 +1,7 @@
+// Build: python -m compiler.aurc build examples/hello.aur -o hello.bin
+fn main() {
+    clear(BLACK);
+    print("Coding too hard? Try Auric!", 40, 108, AURORA);
+    print("Press A to exit.", 40, 140, WHITE);
+    wait_key(KEY_A);
+}
