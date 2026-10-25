@@ -106,15 +106,6 @@ program the extension reports nothing, and whenever `aurc` rejects one the
 extension reports that same error on the same line. The grammar test checks
 that the grammar's built-in and constant lists match `prelude.ts`.
 
-## Publishing to the Marketplace
-
-1. Create a publisher at <https://marketplace.visualstudio.com/manage> and put
-   its ID in `package.json` → `publisher` (it is `teamauroraos` for now).
-2. Create an Azure DevOps personal access token with the *Marketplace (Manage)*
-   scope, then `npx vsce login <publisher>`.
-3. Bump `version` in `package.json`, note the changes in `CHANGELOG.md`, and run
-   `npx vsce publish`.
-
 ## License
 
 GPL-3.0, like AuroraOS, whose compiler the checker is ported from.
