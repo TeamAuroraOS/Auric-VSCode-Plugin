@@ -3,7 +3,7 @@
   "displayName": "Auric",
   "description": "Auric language support for AuroraOS: syntax coloring, live error checking, hover docs, autocomplete, snippets, and aurc build commands for .aur files.",
   "version": "0.1.0",
-  "publisher": "teamauroraos",
+  "publisher": "DisLoPik",
   "license": "GPL-3.0",
   "icon": "images/icon.png",
   "repository": {

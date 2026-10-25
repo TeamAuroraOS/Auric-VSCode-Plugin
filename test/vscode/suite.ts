@@ -39,7 +39,7 @@ test("opens .aur files as Auric and activates", async () => {
     snake = await vscode.workspace.openTextDocument(path.join(FIXTURES, "snake.aur"));
     await vscode.window.showTextDocument(snake);
     assert.equal(snake.languageId, "auric");
-    const ext = vscode.extensions.getExtension("teamauroraos.auric");
+    const ext = vscode.extensions.getExtension("DisLoPik.auric");
     assert.ok(ext, "extension not found");
     await waitFor("activation", () => (ext.isActive ? true : undefined));
 });
